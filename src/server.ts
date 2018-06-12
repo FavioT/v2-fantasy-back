@@ -22,8 +22,14 @@ class Server {
 
   public config() {
     // Set up mongoose
-    const MONGO_URI = 'mongodb://localhost:27017/admin';
+    const MONGO_URI = 'mongodb://localhost:27017/fantasy';
     mongoose.connect(MONGO_URI || process.env.MONGODB_URI)
+    console.log('mongoose readyState is ' + mongoose.connection.readyState);
+
+    mongoose.connection.on('open', function (ref) {
+      console.log('Connected to MongoDb.');
+    });    
+
 
     // config
     this.app.use(bodyParser.urlencoded({ extended: true }));

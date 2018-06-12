@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Post from '../models/Post';
-
+import Players from '../models/Players';
 
 class PostRouter {
 
@@ -13,7 +13,7 @@ class PostRouter {
 
   public GetAll( req: Request, res: Response ): void {
 
-    Post.find({})
+    Players.find({})
     .then((data) => {
       const status = req.statusCode;
       res.json({
@@ -32,7 +32,7 @@ class PostRouter {
   }
 
   public GetPost( req: Request, res: Response ): void {
-
+    const slug: String = req.params.slug;
   }
 
   public CreatePost( req: Request, res: Response ): void {
@@ -50,6 +50,8 @@ class PostRouter {
   routes() {
     this.router.get('/', this.GetAll);
     this.router.get('/:slug', this.GetPost);
+    this.router.get('/:slug', this.UpdatePost);
+    this.router.get('/:slug', this.DeletePost);
   }
 
 }
