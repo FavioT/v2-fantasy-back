@@ -8,6 +8,7 @@ import * as cors from 'cors';
 
 // import routers
 import PostRouter from './router/PostRouter';
+import PlayersRouter from './router/PlayersRouter';
 
 // Server class
 class Server {
@@ -28,7 +29,7 @@ class Server {
 
     mongoose.connection.on('open', function (ref) {
       console.log('Connected to MongoDb.');
-    });    
+    });
 
 
     // config
@@ -61,6 +62,7 @@ class Server {
 
     this.app.use('/', router);
     this.app.use('/api/v1/posts', PostRouter);
+    this.app.use('/api/v1/players', PlayersRouter);
 
   }
 }
