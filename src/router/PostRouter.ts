@@ -32,25 +32,100 @@ class PostRouter {
 
   public GetPost( req: Request, res: Response ): void {
     const slug: String = req.params.slug;
+
+    Post.findOne({ slug })
+    .then((data) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        data
+      });
+    })
+    .catch((err) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        err
+      })
+    })
   }
 
   public CreatePost( req: Request, res: Response ): void {
+    const title: String = req.body.title;
+    const slug: String = req.body.slug;
+    const content: String = req.body.content;
+    const featuredImage: String = req.body.featuredImage;
 
+    const post = new Post({
+      title,
+      slug,
+      content,
+      featuredImage
+    });
+
+    post.save()
+    .then((data) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        data
+      });
+    })
+    .catch((err) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        err
+      })
+    })
   }
 
   public UpdatePost( req: Request, res: Response ): void {
+    const slug: String = req.params.slug;
 
+    Post.findOneAndUpdate({ slug }, req.body)
+    .then((data) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        data
+      });
+    })
+    .catch((err) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        err
+      })
+    })
   }
 
   public DeletePost( req: Request, res: Response ): void {
+    const slug: String = req.params.slug;
 
+    Post.findOneAndRemove({ slug })
+    .then((data) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        data
+      });
+    })
+    .catch((err) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        err
+      })
+    })
   }
 
   routes() {
     this.router.get('/', this.GetAll);
+    this.router.post('/', this.CreatePost);
     this.router.get('/:slug', this.GetPost);
-    this.router.get('/:slug', this.UpdatePost);
-    this.router.get('/:slug', this.DeletePost);
+    this.router.put('/:slug', this.UpdatePost);
+    this.router.delete('/:slug', this.DeletePost);
   }
 
 }

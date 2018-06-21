@@ -30,8 +30,24 @@ class PlayersRouter {
 
   }
 
-  public GetPost( req: Request, res: Response ): void {
-    const slug: String = req.params.slug;
+  public GetPlayer( req: Request, res: Response ): void {    
+    const keyword: String = req.params.name;
+
+    Players.find({ "name" : { '$regex' : keyword, '$options': 'i' }})
+    .then((data) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        data
+      });
+    })
+    .catch((err) => {
+      const status = res.statusCode;
+      res.json({
+        status,
+        err
+      })
+    })
   }
 
   public CreatePost( req: Request, res: Response ): void {
@@ -48,6 +64,7 @@ class PlayersRouter {
 
   routes() {
     this.router.get('/', this.GetAll);
+    this.router.get('/:name', this.GetPlayer);
   }
 
 }
